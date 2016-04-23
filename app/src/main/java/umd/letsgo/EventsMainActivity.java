@@ -11,6 +11,7 @@ import android.widget.Toast;
 public class EventsMainActivity extends ListActivity {
 
     private static final String TAG = "Event Interface";
+
     EventAdapter mAdapter;
     private static final int ADD_TODO_ITEM_REQUEST = 0;
 

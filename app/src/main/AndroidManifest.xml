@@ -24,7 +24,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".EventsMainActivity" />
-        <activity android:name=".CreateEventActivity"></activity>
+        <activity android:name=".CreateEventActivity" />
+        <activity android:name=".ViewEventActivity"></activity>
     </application>
 
 </manifest>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -35,7 +36,6 @@ public class EventAdapter extends BaseAdapter {
     }
 
     // Clears the list adapter of all items.
-
     public void clear() {
         mItems.clear();
         notifyDataSetChanged();
@@ -55,20 +55,18 @@ public class EventAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int pos) {
-
         return pos;
-
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // TODO - Get the current ToDoItem
-        final Event toDoItem = mItems.get(position);
+        final Event event = mItems.get(position);
 
         // TODO - Inflate the View for this ToDoItem
         // from todo_item.xml
         LayoutInflater newinflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        RelativeLayout itemLayout = (RelativeLayout) newinflater.inflate(R.layout.Event, null);
+        RelativeLayout itemLayout = (RelativeLayout) newinflater.inflate(R.layout.create_event, null);
 
         // Fill in specific ToDoItem data
         // Remember that the data that goes in this View
@@ -76,16 +74,24 @@ public class EventAdapter extends BaseAdapter {
         // in the layout file
 
         // TODO - Display Title in TextView
-        final TextView placeView = (TextView) itemLayout.findViewById(R.id.PlaceLabel);
-        placeView.setText(toDoItem.getPlace());
+        final TextView nameView = (TextView) itemLayout.findViewById(R.id.event_name_textView);
+        nameView.setText(event.getEventName());
 
         // TODO - Display Title in TextView
-        final TextView countryView = (TextView) itemLayout.findViewById(R.id.CountryLabel);
-        countryView.setText(toDoItem.getCountry());
+        final TextView countryView = (TextView) itemLayout.findViewById(R.id.event_date_textView);
+        countryView.setText(event.getEventLocation());
 
-        final ImageView flagView = (ImageView) itemLayout.findViewById(R.id.imageView);
-        flagView.setImageBitmap(toDoItem.getFlagBitmap());
+        final Button enterEventView = (Button) itemLayout.findViewById(R.id.view_event_button);
 
-        return null;
+        enterEventView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //do something
+
+                notifyDataSetChanged();
+            }
+        });
+
+        return itemLayout;
     }
 }
