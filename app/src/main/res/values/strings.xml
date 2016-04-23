@@ -19,9 +19,11 @@
     <string name="choose_time_string">Choose Time</string>
     <string name="cancel_string">Cancel</string>
     <string name="reset_string">Reset</string>
+    <string name="submit_string">Create</string>
     <string name="title_string">Create Event</string>
     <string name="enter_title_string">Enter Event Name</string>
     <string name="location_string">Add Location</string>
+    <string name="enter_location_string">Enter address</string>
 
 
     <string name="description_string">Description</string>
