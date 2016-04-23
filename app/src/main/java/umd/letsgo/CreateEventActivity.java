@@ -130,21 +130,10 @@ public class CreateEventActivity extends Activity {
                 String name = mEventName.getText().toString();
                 String address = mEventAddress.getText().toString();
                 String description = mEventDescription.getText().toString();
-
                 // Construct the Date string
                 String fullDate = dateString + " " + timeString;
 
-                // Package ToDoItem data into an Intent
-                Intent data = new Intent();
-                //ADDD INTENT TO GET THE LATITUD AND LONGITUD
-                //USE ASYNTASK
-
-                Event.packageIntent(data, name, description, address, fullDate);
-
-                // TODO - return data Intent and finish
-                setResult(RESULT_OK, data);
-                finish();
-
+                new GoogleLocationAsynchTask().execute(name, address, description, fullDate);
             }
         });
     }
@@ -270,15 +259,15 @@ public class CreateEventActivity extends Activity {
     @Override
         protected String[] doInBackground(String... params) {
 
-            String URL= "http://maps.google.com/maps/api/geocode/json?address= "+ params[0] + "&sensor=false";
-
+            String URL= "http://maps.google.com/maps/api/geocode/json?address= "+ params[2] + "&sensor=false";
             String response;
+
             try {
                 response = getLatLongByURL(URL);
 
                 Log.d(" Lets see the response ", "" + response);
 
-                return new String[]{response};
+                return new String[]{response, params[0],params[1],params[2],params[3]};
             } catch (Exception e) {
                 return new String[]{"error"};
             }
@@ -292,6 +281,13 @@ public class CreateEventActivity extends Activity {
 
 
             try {
+                String name = result[1];
+                String address = result[2];
+                String description = result[3];
+                String fullDate = result[4];
+
+                Log.d("Event ", "name :"+ name +". address:"+ address +". description:"+ description +". fullDate:"+ fullDate);
+
                 JSONObject jsonObject = new JSONObject(result[0]);
 
                 longitude = ((JSONArray)jsonObject.get("results")).getJSONObject(0)
@@ -303,9 +299,21 @@ public class CreateEventActivity extends Activity {
                         .getDouble("lat");
 
 
-                Log.d("longitude obtained", "" + longitude);
-                Log.d("latitude obtained", "" + latitude);
+                Log.d("longitude obtained", "longitude obtained :" + longitude);
+                Log.d("latitude obtained", "latitude obtained: " + latitude);
 
+
+                // Package ToDoItem data into an Intent
+                Intent data = new Intent();
+                //ADDD INTENT TO GET THE LATITUD AND LONGITUD
+                //USE ASYNTASK
+
+                Event.packageIntent(data, name, address, description, fullDate,
+                        Double.toString(longitude),  Double.toString(latitude));
+
+                // TODO - return data Intent and finish
+                setResult(RESULT_OK, data);
+                finish();
 
 
             } catch (JSONException e) {

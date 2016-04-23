@@ -42,7 +42,7 @@ public class EventsMainActivity extends ListActivity {
 
 //        NEED TO ADD STATE TO WORK WITH RESUME
 //
-//                LOAD EVENTS AND DISPLAY
+//                LOAD EVENTS AND DISPLAY ON PAUSE
 
 
     }
