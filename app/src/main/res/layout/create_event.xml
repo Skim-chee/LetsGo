@@ -39,6 +39,21 @@
         android:layout_marginTop="25dp"
         android:layout_below="@+id/title"/>
 
+    <EditText
+        android:id="@+id/enteredLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/TitleLabel"
+        android:layout_marginTop="14dp"
+        android:ems="10"
+        android:hint="@string/enter_location_string"
+        android:inputType="textShortMessage">
+
+        <requestFocus />
+    </EditText>
+
+
     <!-- Description -->
 
     <TextView
