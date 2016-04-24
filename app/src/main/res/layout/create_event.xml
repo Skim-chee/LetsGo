@@ -39,6 +39,20 @@
         android:layout_marginTop="25dp"
         android:layout_below="@+id/title"/>
 
+    <EditText
+        android:id="@+id/enteredLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/enter_location_string"
+        android:inputType="textShortMessage"
+        android:layout_below="@+id/LocationLabel"
+        android:layout_alignEnd="@+id/time">
+
+        <requestFocus />
+    </EditText>
+
+
     <!-- Description -->
 
     <TextView
@@ -47,9 +61,9 @@
         android:layout_height="wrap_content"
         android:text="@string/description_string"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="25dp"
-        android:layout_below="@+id/LocationLabel"/>
+        android:layout_below="@+id/enteredLocation"
+        android:layout_alignEnd="@+id/date_picker_button"
+        android:layout_marginTop="26dp" />
 
     <EditText
         android:id="@+id/description"
