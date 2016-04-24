@@ -66,7 +66,7 @@ public class EventAdapter extends BaseAdapter {
         // TODO - Inflate the View for this ToDoItem
         // from todo_item.xml
         LayoutInflater newinflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        RelativeLayout itemLayout = (RelativeLayout) newinflater.inflate(R.layout.create_event, null);
+        RelativeLayout itemLayout = (RelativeLayout) newinflater.inflate(R.layout.event_view, null);
 
         // Fill in specific ToDoItem data
         // Remember that the data that goes in this View

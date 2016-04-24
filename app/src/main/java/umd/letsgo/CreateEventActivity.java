@@ -259,13 +259,19 @@ public class CreateEventActivity extends Activity {
     @Override
         protected String[] doInBackground(String... params) {
 
-            String URL= "http://maps.google.com/maps/api/geocode/json?address= "+ params[2] + "&sensor=false";
+            String key="AIzaSyCv73k2d8V-Muf9Xp-6vlqsWoLvPADb8hY";
+            String local= params[1].replaceAll(" ", "+").toLowerCase();
+            String URL= "https://maps.google.com/maps/api/geocode/json?address="+ local + "&key=" + key;
             String response;
 
+
             try {
+
+                Log.d(TAG , " this is the url: " + URL);
+
                 response = getLatLongByURL(URL);
 
-                Log.d(" Lets see the response ", "" + response);
+                Log.d(TAG , " this is the response: " + response);
 
                 return new String[]{response, params[0],params[1],params[2],params[3]};
             } catch (Exception e) {
@@ -285,6 +291,8 @@ public class CreateEventActivity extends Activity {
                 String address = result[2];
                 String description = result[3];
                 String fullDate = result[4];
+
+                Log.d("Event ", "RESULT 0" + result[0]);
 
                 Log.d("Event ", "name :"+ name +". address:"+ address +". description:"+ description +". fullDate:"+ fullDate);
 
@@ -336,6 +344,8 @@ public class CreateEventActivity extends Activity {
                 connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 connection.setDoOutput(true);
                 int responseCode = connection.getResponseCode();
+
+                Log.d("Event ", "RESPONSE CODE::  " + responseCode);
 
                 if (responseCode == HttpsURLConnection.HTTP_OK) {
                     String line;

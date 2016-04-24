@@ -21,6 +21,11 @@ public class EventsMainActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_events_main);
 
+//        TODO from login get intent and grabed user created
+//        Intent intentUser = getIntent();
+//        User localUser = (User) intentUser.getSerializableExtra("userObject");
+
+
         mAdapter = new EventAdapter(getApplicationContext());
 
         // Put divider between ToDoItems and FooterView
@@ -53,8 +58,8 @@ public class EventsMainActivity extends ListActivity {
         Log.i(TAG, "Entered onActivityResult()");
 
         // TODO - Check result code and request code
-        // if user submitted a new ToDoItem
-        // Create a new ToDoItem from the data Intent
+        // if user submitted a new Event Item
+        // Create a new Event from the data Intent
         // and then add it to the adapter
         if (requestCode == ADD_TODO_ITEM_REQUEST && resultCode == RESULT_OK) {
 

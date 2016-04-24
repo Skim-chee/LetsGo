@@ -3,21 +3,20 @@ package umd.letsgo;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
-
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -192,6 +191,23 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
+
+
+
+//            TODO items to finish prototype from JEffrey
+//            NEEDS TO SENT TO EVENTS VIEW LIST THE USER OBJECT OR SOMETHING TO
+//            VERIFY THAT THIS IS AN USER AND WE CAN ADD IT TO EVENTS.
+
+//            NEEDS TO GET USER DATA FROM LOGIN AND CREATE AND USER OBJECT
+//            NEED TO MODIFY BELOW INTENT AND ADD THE USER OBJECT adn waht ever we need from
+//            firebase in a bundle to events main activity
+
+            User user = new User(4,"Jeff",email );
+            Intent jeff = new Intent(getBaseContext(), EventsMainActivity.class);
+            // TODO for user created exmaple jeff.putExtra("userObject", user);
+
+            startActivity(jeff);
+
         }
     }
 
