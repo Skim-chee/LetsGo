@@ -28,14 +28,61 @@
         <requestFocus />
     </EditText>
 
-    <!-- Status -->
+    <!-- Location -->
+    <TextView
+        android:id="@+id/LocationLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/location_string"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/title"/>
+
+    <EditText
+        android:id="@+id/enteredLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/enter_location_string"
+        android:inputType="textShortMessage"
+        android:layout_below="@+id/LocationLabel"
+        android:layout_alignEnd="@+id/time">
+
+        <requestFocus />
+    </EditText>
+
+
+    <!-- Description -->
+
+    <TextView
+        android:id="@+id/DescriptionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/description_string"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_below="@+id/enteredLocation"
+        android:layout_alignEnd="@+id/date_picker_button"
+        android:layout_marginTop="26dp" />
+
+    <EditText
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/DescriptionLabel"
+        android:layout_marginTop="14dp"
+        android:ems="10"
+        android:hint="@string/enter_description_string"
+        android:inputType="textMultiLine"/>
+    <!-- Time and Date -->
 
     <TextView
         android:id="@+id/time_and_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/title"
+        android:layout_below="@+id/description"
         android:layout_marginTop="25dp"
         android:text="@string/time_and_date_string"
         android:textAppearance="?android:attr/textAppearanceLarge" />

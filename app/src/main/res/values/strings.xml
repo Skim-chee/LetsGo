@@ -10,7 +10,25 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
+    <string name="time_and_date_string">Time and Date</string>
+    <string name="no_date_set_string">0000&#8211;00&#8211;00</string>
+    <string name="no_time_set_string">00:00:00</string>
+    <string name="choose_date_string">Choose Date</string>
+    <string name="choose_time_string">Choose Time</string>
+    <string name="cancel_string">Cancel</string>
+    <string name="reset_string">Reset</string>
+    <string name="submit_string">Create</string>
+    <string name="title_string">Create Event</string>
+    <string name="enter_title_string">Enter Event Name</string>
+    <string name="location_string">Add Location</string>
+    <string name="enter_location_string">Enter address</string>
+    <string name="description_string">Description</string>
+    <string name="enter_description_string">Enter Short Description</string>
+    <string name="add_new_todo_item_string">Create New Event</string>
+    <string name="fail_create_event">Failed to Create Event, Please try again!!</string>
+    <string name="success_create_event">Event Created Successfully!!</string>
+
+
+
 </resources>
