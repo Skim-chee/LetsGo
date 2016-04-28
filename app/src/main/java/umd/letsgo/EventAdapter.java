@@ -93,6 +93,7 @@ public class EventAdapter extends BaseAdapter {
                 Intent newIntent = new Intent(mContext, ViewEventActivity.class);
                 newIntent.putExtra("Event", (Event) getItem(position));
                 //getIntent().getSerializableExtra("MyClass");
+                newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(newIntent);
                 notifyDataSetChanged();
             }
