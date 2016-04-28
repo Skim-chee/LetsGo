@@ -19,15 +19,6 @@
         android:layout_marginBottom="8dp"
         android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/login_status"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textAlignment="center"
-        android:layout_marginTop="20dp" />
-
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
@@ -80,14 +71,6 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/action_sign_in"
                 android:textStyle="bold" />
-
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/login_with_google"
-                android:text="@string/login_with_google"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-
 
         </LinearLayout>
     </ScrollView>
