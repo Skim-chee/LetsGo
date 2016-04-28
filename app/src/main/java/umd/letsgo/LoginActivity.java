@@ -318,7 +318,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             Intent jeff = new Intent(getBaseContext(), EventsMainActivity.class);
             // TODO for user created exmaple jeff.putExtra("userObject", user);
 
-            startActivity(jeff);
+             startActivity(jeff);
 
         }
     }

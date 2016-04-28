@@ -8,12 +8,17 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
+
 public class EventsMainActivity extends ListActivity {
 
     private static final String TAG = "Event Interface";
 
     EventAdapter mAdapter;
     private static final int ADD_TODO_ITEM_REQUEST = 0;
+//    private final List<Event> listEvents = new ArrayList<Event>();
+    public static int ID = 1250;
+    HashMap<Integer, Event> listEvents=new HashMap<Integer, Event>();
 
 
     @Override
@@ -65,7 +70,10 @@ public class EventsMainActivity extends ListActivity {
 
             //if (mAdapter.getItem())
             Event newEvent = new Event(data);
+            ID++;
+            newEvent.setEventID(ID);
             mAdapter.add(newEvent);
+            listEvents.put(ID, newEvent);
             Toast.makeText(this, R.string.success_create_event, Toast.LENGTH_LONG).show();
 
         } else {

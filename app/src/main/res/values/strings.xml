@@ -30,6 +30,11 @@
     <string name="success_create_event">Event Created Successfully!!</string>
     <string name="login_with_google">Login with Google+</string>
 
+    <string name="view_Desc">Description</string>
+    <string name="view_Date">Date</string>
+    <string name="view_Location">Event Location</string>
+    <string name="get_Directions">Get Directions</string>
+    <string name="view_Even_Users">Friends coming to event !!</string>
 
 
 </resources>

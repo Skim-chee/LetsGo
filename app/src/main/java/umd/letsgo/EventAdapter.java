@@ -1,6 +1,7 @@
 package umd.letsgo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +60,7 @@ public class EventAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         // TODO - Get the current ToDoItem
         final Event event = mItems.get(position);
 
@@ -79,14 +80,32 @@ public class EventAdapter extends BaseAdapter {
 
         // TODO - Display Title in TextView
         final TextView countryView = (TextView) itemLayout.findViewById(R.id.event_date_textView);
-        countryView.setText(event.getEventLocation());
+        countryView.setText(event.getEventDate());
 
-        final Button enterEventView = (Button) itemLayout.findViewById(R.id.view_event_button);
+        final Button viewEventView = (Button) itemLayout.findViewById(R.id.view_event_button);
 
-        enterEventView.setOnClickListener(new View.OnClickListener() {
+        viewEventView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //do something
+                //send intent to view event activity with user and event object
+                Intent newIntent = new Intent(mContext, ViewEventActivity.class);
+                newIntent.putExtra("Event", (Event) getItem(position));
+                //getIntent().getSerializableExtra("MyClass");
+                mContext.startActivity(newIntent);
+                notifyDataSetChanged();
+            }
+        });
+
+        final Button joinEventView = (Button) itemLayout.findViewById(R.id.join_event_button);
+
+        joinEventView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //do something
+                //add to list of users in the event
+                //the event is updated
 
                 notifyDataSetChanged();
             }
