@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "286461246345",
+    "project_id": "letsgo436-1279"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:286461246345:android:27d689d63f1b7a06",
+        "android_client_info": {
+          "package_name": "com.google.samples.quickstart.signin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "286461246345-qrb71pirt62nu2ha4svthbvqtl73nqfh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.google.samples.quickstart.signin",
+            "certificate_hash": "A395AB5656BB0885D0C56F8076C90FEAE455B14B"
+          }
+        },
+        {
+          "client_id": "286461246345-bkt4b2hs2uqa6nndh35p4lj3lvmhql2o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCy4qL9czQz9Bjs4txJKDhuaZn41X8hMaM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
