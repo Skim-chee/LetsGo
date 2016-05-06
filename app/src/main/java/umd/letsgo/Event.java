@@ -3,10 +3,12 @@ package umd.letsgo;
 import android.content.Intent;
 import android.util.Log;
 
+import java.io.Serializable;
+
 /**
  * Created by jeffsadic on 4/22/2016.
  */
-public class Event {
+public class Event implements Serializable {
 
     public static final String ITEM_SEP = System.getProperty("line.separator");
 
@@ -23,6 +25,16 @@ public class Event {
     private String eventDate = new String();
     private String longitude = new String();
     private String latitude = new String();
+    private int eventID;
+
+    public int getEventID() {
+        return eventID;
+    }
+    public void setEventID(int eventID) {
+        this.eventID = eventID;
+    }
+
+
 
     Event(String eventName, String eventLocation, String eventDescription, String eventDate,
           String longitude, String latitude) {
@@ -90,6 +102,8 @@ public class Event {
     public void setEventDescription(String eventDescription) {
         this.eventDescription = eventDescription;
     }
+
+
     public String getEventLocation() {
         return eventLocation;
     }

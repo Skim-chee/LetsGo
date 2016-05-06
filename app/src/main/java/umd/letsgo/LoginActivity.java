@@ -28,10 +28,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -49,13 +53,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
      */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -63,11 +64,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
 
+    Firebase ref = new Firebase("https://letsgo436.firebaseio.com");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Firebase.setAndroidContext(this);
 
         setContentView(R.layout.activity_login);
         // Set up the login form.
@@ -148,34 +149,32 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
 
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        final String emailstr = mEmailView.getText().toString();
+        final String passwordstr = mPasswordView.getText().toString();
+
 
         boolean cancel = false;
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (!TextUtils.isEmpty(passwordstr) && !isPasswordValid(passwordstr)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
         }
 
         // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
+        if (TextUtils.isEmpty(emailstr)) {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
+        } else if (!isEmailValid(emailstr)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
@@ -188,10 +187,66 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            System.out.println("HEY");
 
+            ref.authWithPassword(emailstr, passwordstr,
+                    new Firebase.AuthResultHandler() {
+                        @Override
+                        public void onAuthenticated(AuthData authData) {
+                            // Authentication just completed successfully :)
+                            Map<String, String> map = new HashMap<String, String>();
+                            map.put("provider", authData.getProvider());
+                            if(authData.getProviderData().containsKey("displayName")) {
+                                map.put("displayName", authData.getProviderData().get("displayName").toString());
+                            }
+                            ref.child("users").child(authData.getUid()).setValue(map);
+
+
+                        }
+                        @Override
+                        public void onAuthenticationError(FirebaseError error) {
+                            // Something went wrong :(
+
+                            switch (error.getCode()) {
+                                case FirebaseError.USER_DOES_NOT_EXIST:
+                                    // handle a non existing user
+                                    ref.createUser(emailstr, passwordstr, new Firebase.ValueResultHandler<Map<String, Object>>() {
+                                        @Override
+                                        public void onSuccess(Map<String, Object> result) {
+                                            ref.authWithPassword(
+                                                    emailstr,
+                                                    passwordstr,
+                                                    new Firebase.AuthResultHandler() {
+                                                        @Override
+                                                        public void onAuthenticated(AuthData authData) {
+                                                            // Great, the new user is logged in.
+                                                            // Create a node under "/users/uid/" and store some initial information,
+                                                            // where "uid" is the newly generated unique id for the user:
+                                                            ref.child("users").child(authData.getUid()).child("email").setValue(emailstr);
+                                                        }
+
+                                                        @Override
+                                                        public void onAuthenticationError(FirebaseError error) {
+                                                            // Should hopefully not happen as we just created the user.
+                                                        }
+                                                    }
+                                            );
+                                        }
+                                        @Override
+                                        public void onError(FirebaseError firebaseError) {
+                                            // there was an error
+                                        }
+                                    });
+                                    break;
+                                case FirebaseError.INVALID_PASSWORD:
+                                    // handle an invalid password
+                                    break;
+                                default:
+                                    // handle other errors
+                                    break;
+                            }
+                        }
+                    });
 
 
 //            TODO items to finish prototype from JEffrey
@@ -202,11 +257,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 //            NEED TO MODIFY BELOW INTENT AND ADD THE USER OBJECT adn waht ever we need from
 //            firebase in a bundle to events main activity
 
-            User user = new User(4,"Jeff",email );
-            Intent jeff = new Intent(getBaseContext(), EventsMainActivity.class);
+            Intent account = new Intent(getBaseContext(), EventsMainActivity.class);
+            User user = new User(emailstr);
+            account.putExtra("userObject", user);
             // TODO for user created exmaple jeff.putExtra("userObject", user);
 
-            startActivity(jeff);
+             startActivity(account);
 
         }
     }
@@ -311,61 +367,5 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         int IS_PRIMARY = 1;
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
-    }
 }
 
