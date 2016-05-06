@@ -18,6 +18,7 @@ import java.util.HashMap;
 public class EventsMainActivity extends ListActivity {
 
     private static final String TAG = "Event Interface";
+    private boolean firstTime = true;
 
     EventAdapter mAdapter;
     private static final int ADD_TODO_ITEM_REQUEST = 0;
@@ -55,7 +56,11 @@ public class EventsMainActivity extends ListActivity {
         });
 
         getListView().setAdapter(mAdapter);
-        loadOngoingEvents();
+        if (firstTime){
+            loadOngoingEvents();
+            firstTime = false;
+        }
+
 
 
 
