@@ -2,11 +2,15 @@ package umd.letsgo;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -42,6 +46,11 @@ public class EventAdapter extends BaseAdapter {
     public void clear() {
         mItems.clear();
         notifyDataSetChanged();
+    }
+
+    private Bitmap base64ToBitmap(String b64) {
+        byte[] imageAsBytes = Base64.decode(b64.getBytes(), Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
     }
 
     // Returns the number of ToDoItems
@@ -83,6 +92,9 @@ public class EventAdapter extends BaseAdapter {
         // TODO - Display Title in TextView
         final TextView countryView = (TextView) itemLayout.findViewById(R.id.event_date_textView);
         countryView.setText(event.getEventDate());
+
+        final ImageView eventPic = (ImageView) itemLayout.findViewById(R.id.imageViewListEvents);
+        eventPic.setImageBitmap(base64ToBitmap(event.getImage()));
 
         final Button viewEventView = (Button) itemLayout.findViewById(R.id.view_event_button);
 
