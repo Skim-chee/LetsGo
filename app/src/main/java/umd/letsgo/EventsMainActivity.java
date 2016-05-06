@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
+
 import java.util.HashMap;
 
 public class EventsMainActivity extends ListActivity {
@@ -19,6 +21,7 @@ public class EventsMainActivity extends ListActivity {
 //    private final List<Event> listEvents = new ArrayList<Event>();
     public static int ID = 1250;
     HashMap<Integer, Event> listEvents=new HashMap<Integer, Event>();
+    Firebase ref = new Firebase("https://letsgo436.firebaseio.com");
 
 
     @Override
@@ -69,11 +72,19 @@ public class EventsMainActivity extends ListActivity {
         if (requestCode == ADD_TODO_ITEM_REQUEST && resultCode == RESULT_OK) {
 
             //if (mAdapter.getItem())
-            Event newEvent = new Event(data);
-            ID++;
-            newEvent.setEventID(ID);
-            mAdapter.add(newEvent);
-            listEvents.put(ID, newEvent);
+            Event newEvent = new Event(data, getApplicationContext());
+            //System.out.println(newEvent.toString());
+            //ID++;
+            //newEvent.setEventID(ID);
+            //listEvents.put(ID, newEvent);
+
+            Firebase alanRef = ref.child("events").push();
+            alanRef.setValue(newEvent);
+            mAdapter.add(newEvent, alanRef.getKey());
+
+            //ADD EVENTS TO FIREBASE
+
+
             Toast.makeText(this, R.string.success_create_event, Toast.LENGTH_LONG).show();
 
         } else {

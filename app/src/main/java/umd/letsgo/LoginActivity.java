@@ -10,7 +10,6 @@ import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -223,6 +222,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                                             // Create a node under "/users/uid/" and store some initial information,
                                                             // where "uid" is the newly generated unique id for the user:
                                                             ref.child("users").child(authData.getUid()).child("email").setValue(emailstr);
+
                                                         }
 
                                                         @Override

@@ -20,6 +20,7 @@ public class EventAdapter extends BaseAdapter {
 
 
     private final List<Event> mItems = new ArrayList<Event>();
+    //HashMap<String, Event> listEvents =new HashMap<String, Event>();
     private final Context mContext;
 
     private static final String TAG = "Flag Interface";
@@ -31,7 +32,8 @@ public class EventAdapter extends BaseAdapter {
     // Add a ToDoItem to the adapter
     // Notify observers that the data set has changed
 
-    public void add(Event item) {
+    public void add(Event item, String id) {
+        item.setEventID(id);
         mItems.add(item);
         notifyDataSetChanged();
     }
@@ -91,7 +93,7 @@ public class EventAdapter extends BaseAdapter {
                 //do something
                 //send intent to view event activity with user and event object
                 Intent newIntent = new Intent(mContext, ViewEventActivity.class);
-                newIntent.putExtra("Event", (Event) getItem(position));
+                newIntent.putExtra("Event", ((Event) getItem(position)).getEventID());
                 //getIntent().getSerializableExtra("MyClass");
                 newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(newIntent);
