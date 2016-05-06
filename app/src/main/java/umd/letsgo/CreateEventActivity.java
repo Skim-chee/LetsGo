@@ -8,8 +8,6 @@ import android.app.TimePickerDialog;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -182,7 +180,6 @@ public class CreateEventActivity extends Activity {
             //String path = getPathPic(selectedImage);
             try {
                 InputStream is = getContentResolver().openInputStream(selectedImage);
-                Bitmap image = BitmapFactory.decodeStream(is);
                 is.close();
                 encodedImage = selectedImage.toString();
                 //ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -402,6 +399,8 @@ public class CreateEventActivity extends Activity {
 
             } catch (JSONException e) {
                 e.printStackTrace();
+                Toast.makeText(getApplicationContext(),
+                        "Address Not found, please Modify your address", Toast.LENGTH_LONG).show();
             }
         }
         public String getLatLongByURL(String requestURL) {

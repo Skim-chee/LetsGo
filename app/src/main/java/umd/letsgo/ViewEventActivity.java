@@ -3,11 +3,15 @@ package umd.letsgo;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +48,7 @@ public class ViewEventActivity extends Activity {
         progress.setMessage("Wait while loading...");
 //        progress.setCancelable(false);
         progress.show();
-        progress.dismiss();
+
         // To dismiss the dialog
 
         //addListenerForSingleValueEvent  addValueEventListener
@@ -59,7 +63,7 @@ public class ViewEventActivity extends Activity {
 
                 //System.out.println("Did IT find it this way" + snapshot.child(eventId).toString());
                 Event currentEvent = snapshot.child(eventId).getValue(Event.class);
-
+                progress.dismiss();
                 System.out.println("Did IT find it this way Event name: " + currentEvent.getEventName());
 
 //                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
@@ -72,6 +76,11 @@ public class ViewEventActivity extends Activity {
 
                 final TextView titleView = (TextView) findViewById(R.id.titleEventView);
                 titleView.setText(currentEvent.getEventName());
+
+                //load image
+
+                final ImageView eventPic = (ImageView) findViewById(R.id.imageEventView);
+                eventPic.setImageBitmap(base64ToBitmap(currentEvent.getImage()));
 
                 final TextView dateView = (TextView) findViewById(R.id.dateEventView);
                 dateView.setText(currentEvent.getEventDate());
@@ -155,4 +164,10 @@ public class ViewEventActivity extends Activity {
 //        listDataChild.put(listDataHeader.get(1), nowShowing);
 //        listDataChild.put(listDataHeader.get(2), comingSoon);
     }
+    private Bitmap base64ToBitmap(String b64) {
+        byte[] imageAsBytes = Base64.decode(b64.getBytes(), Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+    }
+
+
 }
