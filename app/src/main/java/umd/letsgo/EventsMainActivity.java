@@ -8,7 +8,10 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.util.HashMap;
 
@@ -52,11 +55,36 @@ public class EventsMainActivity extends ListActivity {
         });
 
         getListView().setAdapter(mAdapter);
+        loadOngoingEvents();
+
+
 
 //        NEED TO ADD STATE TO WORK WITH RESUME
 //
 //                LOAD EVENTS AND DISPLAY ON PAUSE
 
+
+    }
+    protected void loadOngoingEvents(){
+       //Firebase ref2 = new Firebase("https://letsgo436.firebaseio.com/events");
+        // Attach an listener to read the data at our posts reference
+        ref.child("events").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                System.out.println("There are " + snapshot.getChildrenCount() + " blog posts");
+
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    Event post = postSnapshot.getValue(Event.class);
+                    System.out.println(postSnapshot.getKey() + " --- " + post.getEventName());
+                    mAdapter.add(post, postSnapshot.getKey());
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
+            }
+        });
 
     }
 
