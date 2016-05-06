@@ -80,11 +80,6 @@ public class EventAdapter extends BaseAdapter {
         LayoutInflater newinflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         RelativeLayout itemLayout = (RelativeLayout) newinflater.inflate(R.layout.event_view, null);
 
-        // Fill in specific ToDoItem data
-        // Remember that the data that goes in this View
-        // corresponds to the user interface elements defined
-        // in the layout file
-
         // TODO - Display Title in TextView
         final TextView nameView = (TextView) itemLayout.findViewById(R.id.event_name_textView);
         nameView.setText(event.getEventName());
@@ -118,9 +113,6 @@ public class EventAdapter extends BaseAdapter {
         joinEventView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //do something
-                //add to list of users in the event
-                //the event is updated
 
                 notifyDataSetChanged();
             }
