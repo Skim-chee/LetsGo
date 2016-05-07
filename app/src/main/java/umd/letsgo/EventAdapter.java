@@ -89,7 +89,7 @@ public class EventAdapter extends BaseAdapter {
         countryView.setText(event.getEventDate());
 
         final ImageView eventPic = (ImageView) itemLayout.findViewById(R.id.imageViewListEvents);
-        //eventPic.setImageBitmap(base64ToBitmap(event.getImage()));
+        eventPic.setImageBitmap(base64ToBitmap(event.getImage()));
 
         final Button viewEventView = (Button) itemLayout.findViewById(R.id.view_event_button);
 
