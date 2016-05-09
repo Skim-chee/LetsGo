@@ -7,13 +7,6 @@ import android.widget.TextView;
 
 import com.firebase.client.Query;
 
-/**
- * @author greg
- * @since 6/21/13
- *
- * This class is an example of how to use FirebaseListAdapter. It uses the <code>Chat</code> class to encapsulate the
- * data for each individual chat message
- */
 public class ChatListAdapter extends FirebaseListAdapter<Chat> {
 
     // The mUsername for this client. We use this to indicate which messages originated from this user
