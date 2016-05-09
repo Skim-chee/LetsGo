@@ -37,7 +37,9 @@ public class EventsMainActivity extends ListActivity {
 //        Intent intentUser = getIntent();
 //        User localUser = (User) intentUser.getSerializableExtra("userObject");
 
-
+        Intent received = getIntent();
+        User currentUser = (User) received.getSerializableExtra("userObject");
+        
         mAdapter = new EventAdapter(getApplicationContext());
 
         // Put divider between ToDoItems and FooterView

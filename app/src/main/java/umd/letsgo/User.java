@@ -9,6 +9,8 @@ import java.io.Serializable;
 //@SuppressWarnings("serial") //With this annotation we are going to hide compiler warnings
 public class User implements Serializable {
 
+
+
     private String email;
 /*
     TODO create list to hold events the user belongs to
@@ -20,5 +22,12 @@ public class User implements Serializable {
         this.email = email;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
 }
