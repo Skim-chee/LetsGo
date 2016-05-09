@@ -2,6 +2,7 @@ package umd.letsgo;
 
 import android.app.ListActivity;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -40,7 +41,22 @@ public class MainActivity extends ListActivity {
         setTitle("Chatting as " + mUsername);
 
         // Setup our Firebase mFirebaseRef
-        mFirebaseRef = new Firebase(FIREBASE_URL).child("chat");
+        // Olina - setting chat name in firebase as name+address+randomNum
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences("ChatRef", MODE_PRIVATE);
+        String eventName = prefs.getString("eventname", null);
+        String address = prefs.getString("address", null);
+
+        if (eventName == null) {
+            eventName = prefs.getString("eventname", "NOEVENTNAME") ;
+            prefs.edit().putString("eventname", eventName).apply();
+        }
+        if (address == null) {
+            address = prefs.getString("address", "NOADDRESS") ;
+            prefs.edit().putString("address", address).apply();
+        }
+        Random rand = new Random();
+        String uniqueChatName = eventName+address+(rand.nextInt(1000));
+        mFirebaseRef = new Firebase(FIREBASE_URL).child("chat").child(uniqueChatName);
 
         // Setup our input methods. Enter key on the keyboard or pushing the send button
         EditText inputText = (EditText) findViewById(R.id.messageInput);
@@ -106,13 +122,11 @@ public class MainActivity extends ListActivity {
     }
 
     private void setupUsername() {
-        SharedPreferences prefs = getApplication().getSharedPreferences("ChatPrefs", 0);
-        mUsername = prefs.getString("username", null);
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences("ChatRef", MODE_PRIVATE);
+        mUsername = prefs.getString("email", null);
         if (mUsername == null) {
-            Random r = new Random();
-            // Assign a random user name if we don't have one saved.
-            mUsername = "JavaUser" + r.nextInt(100000);
-            prefs.edit().putString("username", mUsername).commit();
+            mUsername = prefs.getString("email", "noname@doesnotexist.com") ;
+            prefs.edit().putString("email", mUsername).apply();
         }
     }
 
