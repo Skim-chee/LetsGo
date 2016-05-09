@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +15,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class EventsMainActivity extends ListActivity {
 
@@ -60,20 +62,46 @@ public class EventsMainActivity extends ListActivity {
 
         getListView().setAdapter(mAdapter);
 
+        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                long viewId = view.getId();
+                if (viewId == R.id.join_event_button) {
+                    Event o = (Event) getListView().getItemAtPosition(position);
+                    //Toast.makeText(getBaseContext(), o.getEventName(), Toast.LENGTH_SHORT).show();
+                    clickJoin(view);
+                }
+
+            }
+        });
         if (firstTime){
             loadOngoingEvents();
             firstTime = false;
         }
 
-
-
-
-//        NEED TO ADD STATE TO WORK WITH RESUME
-//
-//                LOAD EVENTS AND DISPLAY ON PAUSE
-
-
     }
+
+    public void clickJoin(View v) {
+        //not sure if it is just a reference or i get a copy of element.
+        final int position = getListView().getPositionForView(v);
+        Event pickedEvent =(Event) mAdapter.getItem(position);
+        if (pickedEvent.getOwner().equals(currentUser.getEmail())){
+            Toast.makeText(this.getBaseContext(), "You are the owner of this event." , Toast.LENGTH_SHORT).show();
+
+        } else if (pickedEvent.getMembers().containsKey(currentUser.getId())){
+            //check if part of this event already
+            Toast.makeText(this.getBaseContext(), "You are part of this event already." , Toast.LENGTH_SHORT).show();
+        } else {
+            pickedEvent.addMembers(currentUser.getId(), currentUser.getEmail());
+            Map<String, Object> newMember = new HashMap<String, Object>();
+            newMember.put(currentUser.getId(), currentUser.getEmail());
+            ref.child("events/"+ pickedEvent.getEventID() + "/members").updateChildren(newMember);
+            Toast.makeText(this.getBaseContext(), "Joined " + pickedEvent.getEventName() + " Event" , Toast.LENGTH_SHORT).show();
+        }
+
+        //getListView().getItemAtPosition(position);
+    }
+
     protected void loadOngoingEvents(){
        //Firebase ref2 = new Firebase("https://letsgo436.firebaseio.com/events");
         // Attach an listener to read the data at our posts reference
@@ -84,7 +112,9 @@ public class EventsMainActivity extends ListActivity {
                 System.out.println("There are " + snapshot.getChildrenCount() + " blog posts");
                 mAdapter.clear();
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+
                     Event post = postSnapshot.getValue(Event.class);
+
                     System.out.println(postSnapshot.getKey() + " --- " + post.getEventName());
                     mAdapter.add(post, postSnapshot.getKey());
 
@@ -113,26 +143,17 @@ public class EventsMainActivity extends ListActivity {
             //if (mAdapter.getItem())
             Event newEvent = new Event(data, getApplicationContext());
             newEvent.setOwner(currentUser.getEmail());
-            newEvent.addMembers(currentUser.getEmail());
+            newEvent.addMembers(currentUser.getId(), currentUser.getEmail());
 
             //creates initial event
             Firebase alanRef = ref.child("events").push();
             alanRef.setValue(newEvent);
 
-            //Firebase insideEvent = ref.child("events").child(alanRef.getKey());
-
-            //create members list adds owner as first member
-//            Map<String, String> user = new HashMap<String, String>();
-//            user.put(currentUser.getId(), currentUser.getEmail());
-//            Map<String, Map<String, String>> members = new HashMap<String, Map<String, String>>();
-//            members.put("members", user);
-//            insideEvent.setValue(members);
-
-
             mAdapter.add(newEvent, alanRef.getKey());
 //            mAdapter.notifyDataSetChanged();
+
+            //Reload EVENTS TO FIREBASE CAN BE IMPROVED
             loadOngoingEvents();
-            //ADD EVENTS TO FIREBASE
 
 
             Toast.makeText(this, R.string.success_create_event, Toast.LENGTH_LONG).show();
@@ -145,3 +166,19 @@ public class EventsMainActivity extends ListActivity {
     }
 
 }
+//                    Event post = new Event();
+//                    post.setOwner(postSnapshot.child("owner").getValue(String.class));
+//                    post.setEventID(postSnapshot.getKey());
+//                    post.setEventDate(postSnapshot.child("eventDate").getValue(String.class));
+//                    post.setEventDescription(postSnapshot.child("eventDescription").getValue(String.class));
+//                    post.setEventLocation(postSnapshot.child("eventLocation").getValue(String.class));
+//                    post.setEventName(postSnapshot.child("eventName").getValue(String.class));
+//                    post.setImage(postSnapshot.child("image").getValue(String.class));
+//                    post.setLatitude(postSnapshot.child("latitude").getValue(String.class));
+//                    post.setLongitude(postSnapshot.child("longitude").getValue(String.class));
+//
+//                    DataSnapshot members = postSnapshot.child("members");
+//                    for (DataSnapshot member : members.getChildren()) {
+//                        post.addMembers(member. .child("email").getValue(String.class));
+//                    }
+//postSnapshot.

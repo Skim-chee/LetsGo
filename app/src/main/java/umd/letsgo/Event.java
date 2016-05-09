@@ -40,7 +40,18 @@ public class Event implements Serializable {
     private String image = new String();
     private String owner = new String();
     private String eventID;
-    HashMap<String, Boolean> members =new HashMap<String, Boolean>();
+
+    HashMap<String, String> members =new HashMap<String, String>();
+
+    public HashMap<String, String> getMembers() {
+        return members;
+    }
+
+    public void setMembers(HashMap<String, String> members) {
+        this.members = members;
+    }
+
+
 
 
     Event(){
@@ -56,7 +67,7 @@ public class Event implements Serializable {
         this.latitude = latitude;
         this.image = image;
         this.setOwner(email);
-        members.put(email,true);
+        members.put("email",email);
     }
 
     Event(Intent intent, Context mContext) {
@@ -66,7 +77,7 @@ public class Event implements Serializable {
         this.longitude = intent.getStringExtra(Event.LONGITUDE);
         this.latitude = intent.getStringExtra(Event.LATITUDE);
         this.eventDate = intent.getStringExtra(Event.EVENTDATE);
-        members.put(intent.getStringExtra(Event.EMAIL),true);
+        //members.put(intent.getStringExtra(Event.EMAIL),true);
 
 
         String uriString = intent.getStringExtra(Event.IMAGE);
@@ -160,8 +171,8 @@ public class Event implements Serializable {
         this.eventID = eventID;
     }
 
-    public void addMembers(String email){
-        members.put(email,true);
+    public void addMembers(String id,String email){
+        members.put(id,email);
     }
 
     public String getOwner() {

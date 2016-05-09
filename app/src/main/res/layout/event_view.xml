@@ -63,14 +63,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Join Event"
-                    android:id="@+id/join_event_button" />
+                    android:id="@+id/join_event_button"
+                    android:clickable="false"
+                    android:focusable="false"/>
 
                 <Button
                     android:id="@+id/view_event_button"
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="View Event" />
+                    android:text="View Event"
+                    android:clickable="false"
+                    android:focusable="false"/>
 
             </TableRow>
 

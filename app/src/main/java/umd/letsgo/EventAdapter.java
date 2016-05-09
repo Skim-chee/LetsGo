@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -102,7 +103,6 @@ public class EventAdapter extends BaseAdapter {
         viewEventView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //do something
                 //send intent to view event activity with user and event object
                 Intent newIntent = new Intent(mContext, ViewEventActivity.class);
@@ -114,16 +114,24 @@ public class EventAdapter extends BaseAdapter {
             }
         });
 
+        final ListView getParent = (ListView) parent;
+
+
         final Button joinEventView = (Button) itemLayout.findViewById(R.id.join_event_button);
 
         joinEventView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                notifyDataSetChanged();
+                //do something
+                //send intent to view event activity with user and event object
+                getParent.performItemClick(v, position, 0); // Let the event be handled in onItemClick()
             }
         });
 
+
+
+
         return itemLayout;
     }
+
 }

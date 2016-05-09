@@ -62,17 +62,13 @@ public class ViewEventActivity extends Activity {
 
 
                 //System.out.println("Did IT find it this way" + snapshot.child(eventId).toString());
+                //READ FROM STORE AND RECREAT EVENT
                 Event currentEvent = snapshot.child(eventId).getValue(Event.class);
                 progress.dismiss();
                 System.out.println("Did IT find it this way Event name: " + currentEvent.getEventName());
 
-//                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-//                    if (postSnapshot.getKey().equals(eventId)){
-//                        System.out.println("GREATTTT MATCh");
-//                    }
-//                    Event post = postSnapshot.getValue(Event.class);
-//                    //System.out.println(post.getEventName() + " - " + post.getEventDescription());
-//                }
+                //PRINTS USERS
+                System.out.println(currentEvent.getMembers().values().toString());
 
                 final TextView titleView = (TextView) findViewById(R.id.titleEventView);
                 titleView.setText(currentEvent.getEventName());
@@ -99,7 +95,7 @@ public class ViewEventActivity extends Activity {
                 // get the listview
                 expListView = (ExpandableListView) findViewById(R.id.expandableListView);
                 // preparing list data
-                prepareListData();
+                prepareListData(currentEvent.getMembers());
                 listAdapter = new umd.letsgo.ExpandableListAdapter(getApplicationContext(), listDataHeader, listDataChild);
                 // setting list adapter
                 expListView.setAdapter(listAdapter);
@@ -145,21 +141,21 @@ public class ViewEventActivity extends Activity {
     /*
      * Preparing the list data
      */
-    private void prepareListData() {
+    private void prepareListData(HashMap<String, String> users) {
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
 
         // Adding child data
-        listDataHeader.add("List of Friends");
+        listDataHeader.add("List of Attendees");
 //        listDataHeader.add("Now Showing");
 //        listDataHeader.add("Coming Soon..");
 
         // Adding child data
         List<String> listFriends = new ArrayList<String>();
-        listFriends.add("Jeff - jeffreyr@gmail.com");
-        listFriends.add("Carlos  df@gmail.com");
-        listFriends.add("Ye fd@gmail.com");
-        listFriends.add("Mark  marl@gmail.com");
+
+        for (String user : users.values()){
+            listFriends.add(user);
+        }
 
         listDataChild.put(listDataHeader.get(0), listFriends); // Header, Child data
 //        listDataChild.put(listDataHeader.get(1), nowShowing);

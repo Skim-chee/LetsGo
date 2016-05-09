@@ -200,6 +200,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             }
                             ref.child("users").child(authData.getUid()).setValue(map);
 
+
+                            User user = new User(authData.getUid(), emailstr);
+                            account.putExtra("userObject", user);
+                            startActivity(account);
+
                             //load events
 
 
