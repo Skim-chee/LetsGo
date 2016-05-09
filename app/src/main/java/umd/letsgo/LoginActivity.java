@@ -222,7 +222,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                                             // Great, the new user is logged in.
                                                             // Create a node under "/users/uid/" and store some initial information,
                                                             // where "uid" is the newly generated unique id for the user:
-                                                            ref.child("users").child(authData.getUid()).child("email").setValue(emailstr);
+                                                            ref.child("users").child(authData.getUid()).child("status").setValue("New User");
                                                         }
 
                                                         @Override

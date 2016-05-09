@@ -136,6 +136,8 @@ public class CreateEventActivity extends Activity {
                 new GoogleLocationAsynchTask().execute(name, address, description, fullDate);
             }
         });
+
+
     }
 
 

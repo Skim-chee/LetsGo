@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.content.Intent;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -109,6 +110,17 @@ public class EventAdapter extends BaseAdapter {
                 //the event is updated
 
                 notifyDataSetChanged();
+            }
+        });
+
+        final Button chatButton = (Button) itemLayout.findViewById(R.id.chat);
+        chatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent chatIntent = new Intent(mContext, MainActivity.class);
+                chatIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(chatIntent);
+
             }
         });
 
