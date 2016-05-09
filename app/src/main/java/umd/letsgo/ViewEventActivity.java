@@ -105,6 +105,7 @@ public class ViewEventActivity extends Activity {
                 expListView.setAdapter(listAdapter);
 
 
+
                 getDirectionsToGoogle.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -165,8 +166,22 @@ public class ViewEventActivity extends Activity {
 //        listDataChild.put(listDataHeader.get(2), comingSoon);
     }
     private Bitmap base64ToBitmap(String b64) {
+        BitmapFactory.Options options = new BitmapFactory.Options();// Create object of bitmapfactory's option method for further option use
+        options.inPurgeable = true; // inPurgeable is used to free up memory while required
         byte[] imageAsBytes = Base64.decode(b64.getBytes(), Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+        Bitmap eventImage = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+        Bitmap eventImageScaled = Bitmap.createScaledBitmap(eventImage, eventImage.getWidth()/2 , eventImage.getHeight()/2 , true);// convert decoded bitmap into well scalled Bitmap format.
+        return eventImageScaled;
+
+//        BitmapFactory.Options o = new BitmapFactory.Options();
+//        o.inJustDecodeBounds = true;
+//        BitmapFactory.decodeResource(imageAsBytes., null, o);
+//        BitmapFactory.Options options = new BitmapFactory.Options();
+//        options.inJustDecodeBounds = true;
+//        BitmapFactory.decodeResource(getResources(), R.id.myimage, options);
+//        int imageHeight = options.outHeight;
+//        int imageWidth = options.outWidth;
+//        String imageType = options.outMimeType;
     }
 
 

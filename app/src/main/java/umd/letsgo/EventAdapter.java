@@ -49,8 +49,14 @@ public class EventAdapter extends BaseAdapter {
     }
 
     private Bitmap base64ToBitmap(String b64) {
+        BitmapFactory.Options options = new BitmapFactory.Options();// Create object of bitmapfactory's option method for further option use
+        options.inPurgeable = true; // inPurgeable is used to free up memory while required
         byte[] imageAsBytes = Base64.decode(b64.getBytes(), Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+        Bitmap eventImage = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+        Bitmap eventImageScaled = Bitmap.createScaledBitmap(eventImage, 150 , 100 , true);// convert decoded bitmap into well scalled Bitmap format.
+        return eventImageScaled;
+//        byte[] imageAsBytes = Base64.decode(b64.getBytes(), Base64.DEFAULT);
+//        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
     }
 
     // Returns the number of ToDoItems

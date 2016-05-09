@@ -56,6 +56,7 @@ public class EventsMainActivity extends ListActivity {
         });
 
         getListView().setAdapter(mAdapter);
+
         if (firstTime){
             loadOngoingEvents();
             firstTime = false;
@@ -74,10 +75,11 @@ public class EventsMainActivity extends ListActivity {
        //Firebase ref2 = new Firebase("https://letsgo436.firebaseio.com/events");
         // Attach an listener to read the data at our posts reference
         ref.child("events").addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 System.out.println("There are " + snapshot.getChildrenCount() + " blog posts");
-
+                mAdapter.clear();
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     Event post = postSnapshot.getValue(Event.class);
                     System.out.println(postSnapshot.getKey() + " --- " + post.getEventName());
@@ -114,7 +116,8 @@ public class EventsMainActivity extends ListActivity {
             Firebase alanRef = ref.child("events").push();
             alanRef.setValue(newEvent);
             mAdapter.add(newEvent, alanRef.getKey());
-
+//            mAdapter.notifyDataSetChanged();
+            loadOngoingEvents();
             //ADD EVENTS TO FIREBASE
 
 
@@ -126,4 +129,5 @@ public class EventsMainActivity extends ListActivity {
 
 
     }
+
 }
