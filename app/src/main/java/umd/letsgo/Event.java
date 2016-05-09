@@ -12,6 +12,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  * Created by jeffsadic on 4/22/2016.
@@ -27,6 +28,8 @@ public class Event implements Serializable {
     public final static String LATITUDE = "eventLatitude";
     public final static String LONGITUDE = "eventLongitude";
     public final static String IMAGE = "eventImage";
+    public final static String EMAIL = "eventCreatorEmail";
+
 
     private String eventName = new String();
     private String eventDescription = new String();
@@ -35,13 +38,16 @@ public class Event implements Serializable {
     private String longitude = new String();
     private String latitude = new String();
     private String image = new String();
+    private String owner = new String();
     private String eventID;
+    HashMap<String, Boolean> members =new HashMap<String, Boolean>();
+
 
     Event(){
 
     }
     Event(String eventName, String eventLocation, String eventDescription, String eventDate,
-          String longitude, String latitude, String image) {
+          String longitude, String latitude, String image, String email) {
         this.eventName = eventName;
         this.eventDescription = eventDescription;
         this.eventLocation = eventLocation;
@@ -49,6 +55,8 @@ public class Event implements Serializable {
         this.longitude = longitude;
         this.latitude = latitude;
         this.image = image;
+        this.setOwner(email);
+        members.put(email,true);
     }
 
     Event(Intent intent, Context mContext) {
@@ -58,6 +66,9 @@ public class Event implements Serializable {
         this.longitude = intent.getStringExtra(Event.LONGITUDE);
         this.latitude = intent.getStringExtra(Event.LATITUDE);
         this.eventDate = intent.getStringExtra(Event.EVENTDATE);
+        members.put(intent.getStringExtra(Event.EMAIL),true);
+
+
         String uriString = intent.getStringExtra(Event.IMAGE);
         Uri uri = Uri.parse(uriString);
         Bitmap image = null;
@@ -148,6 +159,19 @@ public class Event implements Serializable {
     public void setEventID(String eventID) {
         this.eventID = eventID;
     }
+
+    public void addMembers(String email){
+        members.put(email,true);
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
 
 
 

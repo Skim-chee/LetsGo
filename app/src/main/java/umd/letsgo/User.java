@@ -12,13 +12,15 @@ public class User implements Serializable {
 
 
     private String email;
+    private String id;
 /*
     TODO create list to hold events the user belongs to
     TODO create fucntion to delete event once events is done or
         user decide to leave the evetn
     TODO create fucntion to add event once joined
 */
-    public User(String email) {
+    public User(String id,String email) {
+        this.id = id;
         this.email = email;
     }
 
@@ -28,6 +30,10 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getId() {
+        return id;
     }
 
 }

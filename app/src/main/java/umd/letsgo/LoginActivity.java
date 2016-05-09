@@ -187,7 +187,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             System.out.println("HEY");
-
+            final Intent account = new Intent(getBaseContext(), EventsMainActivity.class);
             ref.authWithPassword(emailstr, passwordstr,
                     new Firebase.AuthResultHandler() {
                         @Override
@@ -199,6 +199,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 map.put("displayName", authData.getProviderData().get("displayName").toString());
                             }
                             ref.child("users").child(authData.getUid()).setValue(map);
+
+                            //load events
 
 
                         }
@@ -222,6 +224,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                                             // Create a node under "/users/uid/" and store some initial information,
                                                             // where "uid" is the newly generated unique id for the user:
                                                             ref.child("users").child(authData.getUid()).child("email").setValue(emailstr);
+
+                                                            User user = new User(authData.getUid(), emailstr);
+                                                            account.putExtra("userObject", user);
+                                                            startActivity(account);
 
                                                         }
 
@@ -257,12 +263,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 //            NEED TO MODIFY BELOW INTENT AND ADD THE USER OBJECT adn waht ever we need from
 //            firebase in a bundle to events main activity
 
-            Intent account = new Intent(getBaseContext(), EventsMainActivity.class);
-            User user = new User(emailstr);
-            account.putExtra("userObject", user);
-            // TODO for user created exmaple jeff.putExtra("userObject", user);
 
-             startActivity(account);
 
         }
     }

@@ -26,6 +26,7 @@ public class EventsMainActivity extends ListActivity {
     public static int ID = 1250;
     HashMap<Integer, Event> listEvents=new HashMap<Integer, Event>();
     Firebase ref = new Firebase("https://letsgo436.firebaseio.com");
+    User currentUser = null;
 
 
     @Override
@@ -38,7 +39,7 @@ public class EventsMainActivity extends ListActivity {
 //        User localUser = (User) intentUser.getSerializableExtra("userObject");
 
         Intent received = getIntent();
-        User currentUser = (User) received.getSerializableExtra("userObject");
+        currentUser = (User) received.getSerializableExtra("userObject");
         
         mAdapter = new EventAdapter(getApplicationContext());
 
@@ -86,6 +87,7 @@ public class EventsMainActivity extends ListActivity {
                     Event post = postSnapshot.getValue(Event.class);
                     System.out.println(postSnapshot.getKey() + " --- " + post.getEventName());
                     mAdapter.add(post, postSnapshot.getKey());
+
                 }
             }
 
@@ -110,13 +112,23 @@ public class EventsMainActivity extends ListActivity {
 
             //if (mAdapter.getItem())
             Event newEvent = new Event(data, getApplicationContext());
-            //System.out.println(newEvent.toString());
-            //ID++;
-            //newEvent.setEventID(ID);
-            //listEvents.put(ID, newEvent);
+            newEvent.setOwner(currentUser.getEmail());
+            newEvent.addMembers(currentUser.getEmail());
 
+            //creates initial event
             Firebase alanRef = ref.child("events").push();
             alanRef.setValue(newEvent);
+
+            //Firebase insideEvent = ref.child("events").child(alanRef.getKey());
+
+            //create members list adds owner as first member
+//            Map<String, String> user = new HashMap<String, String>();
+//            user.put(currentUser.getId(), currentUser.getEmail());
+//            Map<String, Map<String, String>> members = new HashMap<String, Map<String, String>>();
+//            members.put("members", user);
+//            insideEvent.setValue(members);
+
+
             mAdapter.add(newEvent, alanRef.getKey());
 //            mAdapter.notifyDataSetChanged();
             loadOngoingEvents();
