@@ -3,12 +3,14 @@ package umd.letsgo;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -21,8 +23,10 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+
 
 public class ViewEventActivity extends Activity {
 
@@ -64,6 +68,31 @@ public class ViewEventActivity extends Activity {
                 //System.out.println("Did IT find it this way" + snapshot.child(eventId).toString());
                 //READ FROM STORE AND RECREAT EVENT
                 Event currentEvent = snapshot.child(eventId).getValue(Event.class);
+
+                //Olina- gather info for chat name
+                SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("ChatRef", MODE_PRIVATE).edit();
+                editor.putString("eventname", currentEvent.getEventName());
+                editor.putString("address", currentEvent.getEventLocation());
+
+                //Olina- adding list of user emails
+                Collection <String> usersTemp = currentEvent.getMembers().values();
+                Object[] users = usersTemp.toArray();
+                editor.putInt("Users_size", users.length);
+                for(int i = 1; i <= users.length; i++) {
+                    editor.remove("User_" + i);
+                    editor.putString("User_" + i, users[i - 1].toString());
+                }
+
+                //Olina - creating specific event chat id
+//                String eventId = currentEvent.getEventID();
+//                System.out.println(eventId);
+//                editor.putString("eventId", eventId);
+
+                System.out.println("putting: "+eventId);
+                editor.putString("chatId", eventId+"chat");
+                editor.apply();
+
+
                 progress.dismiss();
                 System.out.println("Did IT find it this way Event name: " + currentEvent.getEventName());
 
@@ -91,6 +120,7 @@ public class ViewEventActivity extends Activity {
 
                 final String latitude = currentEvent.getLatitude();
                 final String longitude = currentEvent.getLongitude();
+
 
                 // get the listview
                 expListView = (ExpandableListView) findViewById(R.id.expandableListView);
@@ -136,6 +166,16 @@ public class ViewEventActivity extends Activity {
 
 
         //final Button checkButton = (Button) findViewById(R.id.CheckIntentButton);
+        final Button chatButton = (Button) findViewById(R.id.chat);
+        chatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent chatIntent = new Intent(ViewEventActivity.this, MainActivity.class);
+                chatIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(chatIntent);
+
+            }
+        });
     }
 
     /*

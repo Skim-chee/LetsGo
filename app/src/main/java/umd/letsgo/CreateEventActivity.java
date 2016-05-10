@@ -7,6 +7,8 @@ import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.CursorLoader;
 import android.content.Intent;
+
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -158,6 +160,13 @@ public class CreateEventActivity extends Activity {
                 String description = mEventDescription.getText().toString();
                 // Construct the Date string
                 String fullDate = dateString + " " + timeString;
+
+
+                //Olina- gather info for chat name
+//                SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("ChatRef", MODE_PRIVATE).edit();
+//                editor.putString("eventname", name);
+//                editor.putString("address", address);
+//                editor.apply();
 
                 if (encodedImage != null){
                     new GoogleLocationAsynchTask().execute(name, address, description, fullDate, encodedImage);

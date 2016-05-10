@@ -7,6 +7,7 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -187,6 +188,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             System.out.println("HEY");
+
+            SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("ChatRef", MODE_PRIVATE).edit();
+            editor.remove("email");
+            editor.putString("email", emailstr).apply();
+
             final Intent account = new Intent(getBaseContext(), EventsMainActivity.class);
             ref.authWithPassword(emailstr, passwordstr,
                     new Firebase.AuthResultHandler() {

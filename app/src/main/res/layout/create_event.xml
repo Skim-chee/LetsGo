@@ -179,4 +179,6 @@
         android:layout_alignTop="@+id/uploadEventImage"
         android:layout_alignStart="@+id/DescriptionLabel" />
 
+
+
 </RelativeLayout>
