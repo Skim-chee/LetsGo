@@ -17,6 +17,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.util.Random;
 
 public class MainActivity extends ListActivity {
 
@@ -32,14 +33,17 @@ public class MainActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Make sure we have a mUsername
         setupUsername();
+
         setTitle("Chatting as " + mUsername);
 
         // Setup our Firebase mFirebaseRef
-        // Setting chat name in firebase
+        // Setting chat name in Firebase
         SharedPreferences prefs = getApplicationContext().getSharedPreferences("ChatRef", MODE_PRIVATE);
         String chatId = prefs.getString("chatId", null);
         System.out.println("not null: "+ chatId);
+
 
         if(chatId == null){
             SharedPreferences.Editor editor = prefs.edit();
@@ -73,7 +77,6 @@ public class MainActivity extends ListActivity {
     @Override
     public void onStart() {
         super.onStart();
-        // Setup our view and list adapter. Ensure it scrolls to the bottom as data changes
         final ListView listView = getListView();
         mChatListAdapter = new ChatListAdapter(mFirebaseRef.limit(50), this, R.layout.chat_message, mUsername);
         listView.setAdapter(mChatListAdapter);
@@ -98,6 +101,7 @@ public class MainActivity extends ListActivity {
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
+                // No-op
             }
         });
     }
