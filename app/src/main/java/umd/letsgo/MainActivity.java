@@ -17,7 +17,6 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import java.util.Random;
 
 public class MainActivity extends ListActivity {
 
@@ -33,27 +32,14 @@ public class MainActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Make sure we have a mUsername
         setupUsername();
-
         setTitle("Chatting as " + mUsername);
 
         // Setup our Firebase mFirebaseRef
-        // Setting chat name in firebase as name+address+randomNum
+        // Setting chat name in firebase
         SharedPreferences prefs = getApplicationContext().getSharedPreferences("ChatRef", MODE_PRIVATE);
-//        String eventName = prefs.getString("eventname", null);
-//        String address = prefs.getString("address", null);
         String chatId = prefs.getString("chatId", null);
         System.out.println("not null: "+ chatId);
-
-//        if (eventName == null) {
-//            eventName = prefs.getString("eventname", "NOEVENTNAME") ;
-//            prefs.edit().putString("eventname", eventName).apply();
-//        }
-//        if (address == null) {
-//            address = prefs.getString("address", "NOADDRESS") ;
-//            prefs.edit().putString("address", address).apply();
-//        }
 
         if(chatId == null){
             SharedPreferences.Editor editor = prefs.edit();
@@ -89,7 +75,6 @@ public class MainActivity extends ListActivity {
         super.onStart();
         // Setup our view and list adapter. Ensure it scrolls to the bottom as data changes
         final ListView listView = getListView();
-        // Tell our list adapter that we only want 50 messages at a time
         mChatListAdapter = new ChatListAdapter(mFirebaseRef.limit(50), this, R.layout.chat_message, mUsername);
         listView.setAdapter(mChatListAdapter);
         mChatListAdapter.registerDataSetObserver(new DataSetObserver() {
@@ -100,7 +85,6 @@ public class MainActivity extends ListActivity {
             }
         });
 
-        // Finally, a little indication of connection status
         mConnectedListener = mFirebaseRef.getRoot().child(".info/connected").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -114,7 +98,6 @@ public class MainActivity extends ListActivity {
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-                // No-op
             }
         });
     }
@@ -153,9 +136,7 @@ public class MainActivity extends ListActivity {
                 EditText inputText = (EditText) findViewById(R.id.messageInput);
                 String input = inputText.getText().toString();
                 if (!input.equals("")) {
-                    // Create our 'model', a Chat object
                     Chat chat = new Chat(input, mUsername);
-                    // Create a new, auto-generated child of that chat location, and save our chat data there
                     mFirebaseRef.push().setValue(chat);
                     inputText.setText("");
                 }
