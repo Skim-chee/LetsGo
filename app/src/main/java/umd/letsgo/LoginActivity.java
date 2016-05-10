@@ -27,6 +27,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
@@ -257,6 +258,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     break;
                                 case FirebaseError.INVALID_PASSWORD:
                                     // handle an invalid password
+                                    Toast.makeText(getBaseContext(), "INVALID PASSWORD", Toast.LENGTH_SHORT).show();
                                     break;
                                 default:
                                     // handle other errors
