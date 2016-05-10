@@ -67,7 +67,7 @@ public class EventsMainActivity extends ListActivity {
                                     int position, long id) {
                 long viewId = view.getId();
                 if (viewId == R.id.join_event_button) {
-                    Event o = (Event) getListView().getItemAtPosition(position);
+                    //Event o = (Event) getListView().getItemAtPosition(position-1);
                     //Toast.makeText(getBaseContext(), o.getEventName(), Toast.LENGTH_SHORT).show();
                     clickJoin(view);
                 }
@@ -86,7 +86,8 @@ public class EventsMainActivity extends ListActivity {
         final int position = getListView().getPositionForView(v);
         Event pickedEvent =(Event) mAdapter.getItem(position-1);
         if (pickedEvent.getOwner().equals(currentUser.getEmail())){
-            Toast.makeText(this.getBaseContext(), "You are the owner of this event." , Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.getBaseContext(), "You are the owner of event: " +
+                    pickedEvent.getEventName() +".", Toast.LENGTH_SHORT).show();
 
         } else if (pickedEvent.getMembers().containsKey(currentUser.getId())){
             //check if part of this event already
