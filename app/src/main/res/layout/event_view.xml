@@ -7,7 +7,10 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#515151">
+        android:paddingBottom="15dp"
+        android:paddingTop="5dp"
+
+        android:background="#f9f9f9">
 
         <ImageView
             android:layout_width="120dp"
@@ -38,7 +41,7 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="New Text"
                     android:textStyle="bold"
-                    android:textColor="#ffffff" />
+                    android:textColor="@color/colorPrimary" />
 
             </TableRow>
 
@@ -51,11 +54,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="New Text"
-                    android:layout_column="0" />
+                    android:layout_column="0"
+                    android:textColor="#666666" />
             </TableRow>
 
-            <TableRow
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent">
 
                 <Button
@@ -65,18 +69,21 @@
                     android:text="Join Event"
                     android:id="@+id/join_event_button"
                     android:clickable="false"
-                    android:focusable="false"/>
+                    android:focusable="false"
+                    android:background="@color/colorPrimaryDark"
+                    android:layout_marginRight="15dp"/>
 
                 <Button
                     android:id="@+id/view_event_button"
-                    style="?android:attr/buttonStyleSmall"
+                    style="@+id/join_event_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="View Event"
                     android:clickable="false"
-                    android:focusable="false"/>
+                    android:focusable="false"
+                    android:background="@color/colorPrimaryDark" />
 
-            </TableRow>
+            </LinearLayout>
 
         </TableLayout>
     </LinearLayout>
