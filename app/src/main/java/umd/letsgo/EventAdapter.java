@@ -2,12 +2,16 @@ package umd.letsgo;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.content.Intent;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,6 +25,7 @@ public class EventAdapter extends BaseAdapter {
 
 
     private final List<Event> mItems = new ArrayList<Event>();
+    //HashMap<String, Event> listEvents =new HashMap<String, Event>();
     private final Context mContext;
 
     private static final String TAG = "Flag Interface";
@@ -32,7 +37,8 @@ public class EventAdapter extends BaseAdapter {
     // Add a ToDoItem to the adapter
     // Notify observers that the data set has changed
 
-    public void add(Event item) {
+    public void add(Event item, String id) {
+        item.setEventID(id);
         mItems.add(item);
         notifyDataSetChanged();
     }
@@ -41,6 +47,17 @@ public class EventAdapter extends BaseAdapter {
     public void clear() {
         mItems.clear();
         notifyDataSetChanged();
+    }
+
+    private Bitmap base64ToBitmap(String b64) {
+        BitmapFactory.Options options = new BitmapFactory.Options();// Create object of bitmapfactory's option method for further option use
+        options.inPurgeable = true; // inPurgeable is used to free up memory while required
+        byte[] imageAsBytes = Base64.decode(b64.getBytes(), Base64.DEFAULT);
+        Bitmap eventImage = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+        Bitmap eventImageScaled = Bitmap.createScaledBitmap(eventImage, 150 , 100 , true);// convert decoded bitmap into well scalled Bitmap format.
+        return eventImageScaled;
+//        byte[] imageAsBytes = Base64.decode(b64.getBytes(), Base64.DEFAULT);
+//        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
     }
 
     // Returns the number of ToDoItems
@@ -70,11 +87,6 @@ public class EventAdapter extends BaseAdapter {
         LayoutInflater newinflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         RelativeLayout itemLayout = (RelativeLayout) newinflater.inflate(R.layout.event_view, null);
 
-        // Fill in specific ToDoItem data
-        // Remember that the data that goes in this View
-        // corresponds to the user interface elements defined
-        // in the layout file
-
         // TODO - Display Title in TextView
         final TextView nameView = (TextView) itemLayout.findViewById(R.id.event_name_textView);
         nameView.setText(event.getEventName());
@@ -83,16 +95,18 @@ public class EventAdapter extends BaseAdapter {
         final TextView countryView = (TextView) itemLayout.findViewById(R.id.event_date_textView);
         countryView.setText(event.getEventDate());
 
+        final ImageView eventPic = (ImageView) itemLayout.findViewById(R.id.imageViewListEvents);
+        eventPic.setImageBitmap(base64ToBitmap(event.getImage()));
+
         final Button viewEventView = (Button) itemLayout.findViewById(R.id.view_event_button);
 
         viewEventView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //do something
                 //send intent to view event activity with user and event object
                 Intent newIntent = new Intent(mContext, ViewEventActivity.class);
-                newIntent.putExtra("Event", (Event) getItem(position));
+                newIntent.putExtra("Event", ((Event) getItem(position)).getEventID());
                 //getIntent().getSerializableExtra("MyClass");
                 newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(newIntent);
@@ -100,30 +114,24 @@ public class EventAdapter extends BaseAdapter {
             }
         });
 
+        final ListView getParent = (ListView) parent;
+
+
         final Button joinEventView = (Button) itemLayout.findViewById(R.id.join_event_button);
 
         joinEventView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //do something
-                //add to list of users in the event
-                //the event is updated
-
-                notifyDataSetChanged();
+                //send intent to view event activity with user and event object
+                getParent.performItemClick(v, position, 0); // Let the event be handled in onItemClick()
             }
         });
 
-        final Button chatButton = (Button) itemLayout.findViewById(R.id.chat);
-        chatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent chatIntent = new Intent(mContext, MainActivity.class);
-                chatIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(chatIntent);
 
-            }
-        });
+
 
         return itemLayout;
     }
+
 }

@@ -1,9 +1,18 @@
 package umd.letsgo;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.util.Base64;
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  * Created by jeffsadic on 4/22/2016.
@@ -18,6 +27,9 @@ public class Event implements Serializable {
     public final static String EVENTDATE = "eventDate";
     public final static String LATITUDE = "eventLatitude";
     public final static String LONGITUDE = "eventLongitude";
+    public final static String IMAGE = "eventImage";
+    public final static String EMAIL = "eventCreatorEmail";
+
 
     private String eventName = new String();
     private String eventDescription = new String();
@@ -25,39 +37,68 @@ public class Event implements Serializable {
     private String eventDate = new String();
     private String longitude = new String();
     private String latitude = new String();
-    private int eventID;
+    private String image = new String();
+    private String owner = new String();
+    private String eventID;
 
-    public int getEventID() {
-        return eventID;
+    HashMap<String, String> members =new HashMap<String, String>();
+
+    public HashMap<String, String> getMembers() {
+        return members;
     }
-    public void setEventID(int eventID) {
-        this.eventID = eventID;
+
+    public void setMembers(HashMap<String, String> members) {
+        this.members = members;
     }
 
 
 
+
+    Event(){
+
+    }
     Event(String eventName, String eventLocation, String eventDescription, String eventDate,
-          String longitude, String latitude) {
+          String longitude, String latitude, String image, String email) {
         this.eventName = eventName;
         this.eventDescription = eventDescription;
         this.eventLocation = eventLocation;
         this.eventDate = eventDate;
         this.longitude = longitude;
         this.latitude = latitude;
+        this.image = image;
+        this.setOwner(email);
+        members.put("email",email);
     }
 
-    Event(Intent intent) {
+    Event(Intent intent, Context mContext) {
         this.eventName = intent.getStringExtra(Event.NAME);
         this.eventLocation = intent.getStringExtra(Event.LOCATION);
         this.eventDescription = intent.getStringExtra(Event.DESCRIPTION);
         this.longitude = intent.getStringExtra(Event.LONGITUDE);
         this.latitude = intent.getStringExtra(Event.LATITUDE);
         this.eventDate = intent.getStringExtra(Event.EVENTDATE);
+        //members.put(intent.getStringExtra(Event.EMAIL),true);
+
+
+        String uriString = intent.getStringExtra(Event.IMAGE);
+        Uri uri = Uri.parse(uriString);
+        Bitmap image = null;
+        try {
+            InputStream is = mContext.getContentResolver().openInputStream(uri);
+            image = BitmapFactory.decodeStream(is);
+            is.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG,50,byteArrayOutputStream);
+        this.image = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
+
     }
 
     public static void packageIntent(Intent intent, String eventName, String eventLocation,
                                      String eventDescription, String eventDate,
-                                     String longitude, String latitude) {
+                                     String longitude, String latitude, String image) {
 
         Log.d("package Intent ", "name :" + eventName +"eventLocation :" + eventLocation
                 +"eventDescription :" + eventDescription +"eventDate :" + eventDate
@@ -70,6 +111,11 @@ public class Event implements Serializable {
         intent.putExtra(Event.LONGITUDE, longitude);
         intent.putExtra(Event.LATITUDE, latitude);
         intent.putExtra(Event.EVENTDATE, eventDate);
+        intent.putExtra(Event.IMAGE, image);
+        //byte[] bytes = image.getBytes(Charset.defaultCharset());
+        //String text = new String(bytes, Charsets.UTF_8);
+
+
     }
 
     public String getLongitude() {
@@ -102,13 +148,42 @@ public class Event implements Serializable {
     public void setEventDescription(String eventDescription) {
         this.eventDescription = eventDescription;
     }
-
-
     public String getEventLocation() {
         return eventLocation;
     }
     public void setEventLocation(String eventLocation) {
         this.eventLocation = eventLocation;
     }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getEventID() {
+        return eventID;
+    }
+
+    public void setEventID(String eventID) {
+        this.eventID = eventID;
+    }
+
+    public void addMembers(String id,String email){
+        members.put(id,email);
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+
+
 
 }

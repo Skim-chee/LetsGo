@@ -5,14 +5,12 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -65,7 +63,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-
 
     Firebase ref = new Firebase("https://letsgo436.firebaseio.com");
 
@@ -152,6 +149,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
+
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -159,6 +157,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Store values at the time of the login attempt.
         final String emailstr = mEmailView.getText().toString();
         final String passwordstr = mPasswordView.getText().toString();
+
 
         boolean cancel = false;
         View focusView = null;
@@ -189,13 +188,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             System.out.println("HEY");
-
-            // Olina adding email info for chat
             SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("ChatRef", MODE_PRIVATE).edit();
             editor.remove("email");
             editor.putString("email", emailstr).apply();
-            System.out.println(emailstr);
 
+            final Intent account = new Intent(getBaseContext(), EventsMainActivity.class);
             ref.authWithPassword(emailstr, passwordstr,
                     new Firebase.AuthResultHandler() {
                         @Override
@@ -203,13 +200,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             // Authentication just completed successfully :)
                             Map<String, String> map = new HashMap<String, String>();
                             map.put("provider", authData.getProvider());
-                            if (authData.getProviderData().containsKey("displayName")) {
+                            if(authData.getProviderData().containsKey("displayName")) {
                                 map.put("displayName", authData.getProviderData().get("displayName").toString());
                             }
                             ref.child("users").child(authData.getUid()).setValue(map);
 
-                        }
 
+                            User user = new User(authData.getUid(), emailstr);
+                            account.putExtra("userObject", user);
+                            startActivity(account);
+
+                            //load events
+
+
+                        }
                         @Override
                         public void onAuthenticationError(FirebaseError error) {
                             // Something went wrong :(
@@ -229,7 +233,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                                             // Great, the new user is logged in.
                                                             // Create a node under "/users/uid/" and store some initial information,
                                                             // where "uid" is the newly generated unique id for the user:
-                                                            ref.child("users").child(authData.getUid()).child("status").setValue("New User");
+                                                            ref.child("users").child(authData.getUid()).child("email").setValue(emailstr);
+
+                                                            User user = new User(authData.getUid(), emailstr);
+                                                            account.putExtra("userObject", user);
+                                                            startActivity(account);
+
                                                         }
 
                                                         @Override
@@ -239,7 +248,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                                     }
                                             );
                                         }
-
                                         @Override
                                         public void onError(FirebaseError firebaseError) {
                                             // there was an error
@@ -265,12 +273,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 //            NEED TO MODIFY BELOW INTENT AND ADD THE USER OBJECT adn waht ever we need from
 //            firebase in a bundle to events main activity
 
-            Intent account = new Intent(getBaseContext(), EventsMainActivity.class);
-            User user = new User(emailstr);
-            account.putExtra("userObject", user);
-            // TODO for user created exmaple jeff.putExtra("userObject", user);
 
-             startActivity(account);
 
         }
     }

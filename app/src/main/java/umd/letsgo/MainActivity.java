@@ -2,7 +2,6 @@ package umd.letsgo;
 
 import android.app.ListActivity;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -22,7 +21,6 @@ import java.util.Random;
 
 public class MainActivity extends ListActivity {
 
-    // TODO: change this to your own Firebase URL
     private static final String FIREBASE_URL = "https://letsgo436.firebaseio.com";
 
     private String mUsername;
@@ -41,22 +39,29 @@ public class MainActivity extends ListActivity {
         setTitle("Chatting as " + mUsername);
 
         // Setup our Firebase mFirebaseRef
-        // Olina - setting chat name in firebase as name+address+randomNum
+        // Setting chat name in firebase as name+address+randomNum
         SharedPreferences prefs = getApplicationContext().getSharedPreferences("ChatRef", MODE_PRIVATE);
-        String eventName = prefs.getString("eventname", null);
-        String address = prefs.getString("address", null);
+//        String eventName = prefs.getString("eventname", null);
+//        String address = prefs.getString("address", null);
+        String chatId = prefs.getString("chatId", null);
+        System.out.println("not null: "+ chatId);
 
-        if (eventName == null) {
-            eventName = prefs.getString("eventname", "NOEVENTNAME") ;
-            prefs.edit().putString("eventname", eventName).apply();
+//        if (eventName == null) {
+//            eventName = prefs.getString("eventname", "NOEVENTNAME") ;
+//            prefs.edit().putString("eventname", eventName).apply();
+//        }
+//        if (address == null) {
+//            address = prefs.getString("address", "NOADDRESS") ;
+//            prefs.edit().putString("address", address).apply();
+//        }
+
+        if(chatId == null){
+            SharedPreferences.Editor editor = prefs.edit();
+            chatId = "LostChat";
+            editor.putString("chatId", "LostChat");
+            editor.apply();
         }
-        if (address == null) {
-            address = prefs.getString("address", "NOADDRESS") ;
-            prefs.edit().putString("address", address).apply();
-        }
-        Random rand = new Random();
-        String uniqueChatName = eventName+address+(rand.nextInt(1000));
-        mFirebaseRef = new Firebase(FIREBASE_URL).child("chat").child(uniqueChatName);
+        mFirebaseRef = new Firebase(FIREBASE_URL).child("chat").child(chatId);
 
         // Setup our input methods. Enter key on the keyboard or pushing the send button
         EditText inputText = (EditText) findViewById(R.id.messageInput);
@@ -131,14 +136,32 @@ public class MainActivity extends ListActivity {
     }
 
     private void sendMessage() {
-        EditText inputText = (EditText) findViewById(R.id.messageInput);
-        String input = inputText.getText().toString();
-        if (!input.equals("")) {
-            // Create our 'model', a Chat object
-            Chat chat = new Chat(input, mUsername);
-            // Create a new, auto-generated child of that chat location, and save our chat data there
-            mFirebaseRef.push().setValue(chat);
-            inputText.setText("");
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences("ChatRef", MODE_PRIVATE);
+        int size = prefs.getInt("Users_size", 0);
+        String userEmail = prefs.getString("email", null);
+        boolean ismember = false;
+        if(userEmail != null){
+            for(int i = 1; i <= size; i++) {
+                String temp = prefs.getString("User_" + i, null);
+                if(temp.equals(userEmail)){
+                    ismember = true;
+                    break;
+                }
+            }
+
+            if(ismember){
+                EditText inputText = (EditText) findViewById(R.id.messageInput);
+                String input = inputText.getText().toString();
+                if (!input.equals("")) {
+                    // Create our 'model', a Chat object
+                    Chat chat = new Chat(input, mUsername);
+                    // Create a new, auto-generated child of that chat location, and save our chat data there
+                    mFirebaseRef.push().setValue(chat);
+                    inputText.setText("");
+                }
+            }else{
+                Toast.makeText(getApplicationContext(), "Event not joined. Please join event first.", Toast.LENGTH_LONG).show();
+            }
         }
     }
 }
