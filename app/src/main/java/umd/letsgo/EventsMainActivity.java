@@ -50,7 +50,7 @@ public class EventsMainActivity extends ListActivity {
 
         TextView footerView = (TextView) this.getLayoutInflater().inflate(R.layout.footer_view, null);
 
-        getListView().addFooterView(footerView);
+        getListView().addHeaderView(footerView);
 
         footerView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -188,10 +188,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             System.out.println("HEY");
+<<<<<<< HEAD
             SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("ChatRef", MODE_PRIVATE).edit();
             editor.remove("email");
             editor.putString("email", emailstr).apply();
 
+=======
+>>>>>>> 947eb3b767146c93e31e98601425e3b24ae391a8
             final Intent account = new Intent(getBaseContext(), EventsMainActivity.class);
             ref.authWithPassword(emailstr, passwordstr,
                     new Firebase.AuthResultHandler() {

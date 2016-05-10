@@ -3,7 +3,10 @@ package umd.letsgo;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+<<<<<<< HEAD
 import android.content.SharedPreferences;
+=======
+>>>>>>> 947eb3b767146c93e31e98601425e3b24ae391a8
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -68,6 +71,7 @@ public class ViewEventActivity extends Activity {
                 //System.out.println("Did IT find it this way" + snapshot.child(eventId).toString());
                 //READ FROM STORE AND RECREAT EVENT
                 Event currentEvent = snapshot.child(eventId).getValue(Event.class);
+<<<<<<< HEAD
 
                 //Olina- gather info for chat name
                 SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("ChatRef", MODE_PRIVATE).edit();
@@ -95,10 +99,49 @@ public class ViewEventActivity extends Activity {
 
                 progress.dismiss();
                 System.out.println("Did IT find it this way Event name: " + currentEvent.getEventName());
+=======
+                progress.dismiss();
+                System.out.println("Did IT find it this way Event name: " + currentEvent.getEventName());
 
                 //PRINTS USERS
                 System.out.println(currentEvent.getMembers().values().toString());
 
+                final TextView titleView = (TextView) findViewById(R.id.titleEventView);
+                titleView.setText(currentEvent.getEventName());
+
+                //load image
+
+                final ImageView eventPic = (ImageView) findViewById(R.id.imageEventView);
+                eventPic.setImageBitmap(base64ToBitmap(currentEvent.getImage()));
+
+                final TextView dateView = (TextView) findViewById(R.id.dateEventView);
+                dateView.setText(currentEvent.getEventDate());
+
+                final TextView descriptionView = (TextView) findViewById(R.id.descEventView);
+                descriptionView.setText(currentEvent.getEventDescription());
+
+                final TextView locationView = (TextView) findViewById(R.id.eventLocationView);
+                locationView.setText(currentEvent.getEventLocation());
+
+                final TextView getDirectionsToGoogle = (TextView) findViewById(R.id.getDirectionsView);
+
+                final String latitude = currentEvent.getLatitude();
+                final String longitude = currentEvent.getLongitude();
+
+                // get the listview
+                expListView = (ExpandableListView) findViewById(R.id.expandableListView);
+                // preparing list data
+                prepareListData(currentEvent.getMembers());
+                listAdapter = new umd.letsgo.ExpandableListAdapter(getApplicationContext(), listDataHeader, listDataChild);
+                // setting list adapter
+                expListView.setAdapter(listAdapter);
+
+>>>>>>> 947eb3b767146c93e31e98601425e3b24ae391a8
+
+                //PRINTS USERS
+                System.out.println(currentEvent.getMembers().values().toString());
+
+<<<<<<< HEAD
                 final TextView titleView = (TextView) findViewById(R.id.titleEventView);
                 titleView.setText(currentEvent.getEventName());
 
@@ -129,7 +172,31 @@ public class ViewEventActivity extends Activity {
                 listAdapter = new umd.letsgo.ExpandableListAdapter(getApplicationContext(), listDataHeader, listDataChild);
                 // setting list adapter
                 expListView.setAdapter(listAdapter);
+=======
+                getDirectionsToGoogle.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
+                        // Create a Uri from an intent string. Use the result to create an Intent.
+                        String URL = "google.streetview:cbll=" + latitude + "," + longitude;
+                        Uri gmmIntentUri = Uri.parse(URL);
+>>>>>>> 947eb3b767146c93e31e98601425e3b24ae391a8
+
+                        // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        // Make the Intent explicit by setting the Google Maps package
+                        mapIntent.setPackage("com.google.android.apps.maps");
+
+                        if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                            startActivity(mapIntent);
+                        } else {
+                            Toast.makeText(getApplicationContext(),
+                                    "Google Maps Not found in your Device", Toast.LENGTH_LONG).show();
+                        }
+                        // Attempt to start an activity that can handle the Intent
+
+                    }
+                });
 
 
                 getDirectionsToGoogle.setOnClickListener(new View.OnClickListener() {
@@ -166,6 +233,7 @@ public class ViewEventActivity extends Activity {
 
 
         //final Button checkButton = (Button) findViewById(R.id.CheckIntentButton);
+<<<<<<< HEAD
         final Button chatButton = (Button) findViewById(R.id.chat);
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,6 +244,8 @@ public class ViewEventActivity extends Activity {
 
             }
         });
+=======
+>>>>>>> 947eb3b767146c93e31e98601425e3b24ae391a8
     }
 
     /*

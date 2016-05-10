@@ -3,7 +3,11 @@
     android:id="@+id/footerView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingBottom="20dp"
+    android:paddingTop="20dp"
     android:gravity="center_horizontal"
     android:text="@string/add_new_todo_item_string"
-    android:textSize="24sp" >
+    android:textColor="@color/colorText"
+    android:textSize="24sp"
+    android:background="#ffffff">
 </TextView>
