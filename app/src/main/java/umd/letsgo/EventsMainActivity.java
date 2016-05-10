@@ -46,20 +46,33 @@ public class EventsMainActivity extends ListActivity {
         mAdapter = new EventAdapter(getApplicationContext());
 
         // Put divider between ToDoItems and FooterView
-        getListView().setFooterDividersEnabled(true);
+//        getListView().setFooterDividersEnabled(true);
+//
+//        TextView footerView = (TextView) this.getLayoutInflater().inflate(R.layout.footer_view, null);
+//
+//        getListView().addFooterView(footerView);
+//
+//        footerView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent newIntent = new Intent(getBaseContext(), CreateEventActivity.class);
+//                startActivityForResult(newIntent, ADD_TODO_ITEM_REQUEST);
+//            }
+//        });
 
-        TextView footerView = (TextView) this.getLayoutInflater().inflate(R.layout.footer_view, null);
+        getListView().setHeaderDividersEnabled(true);
 
-        getListView().addFooterView(footerView);
+        TextView headerView = (TextView) this.getLayoutInflater().inflate(R.layout.header_view, null);
 
-        footerView.setOnClickListener(new View.OnClickListener() {
-            @Override
+        getListView().addHeaderView(headerView);
+
+        headerView.setOnClickListener(new View.OnClickListener() {
+                        @Override
             public void onClick(View v) {
                 Intent newIntent = new Intent(getBaseContext(), CreateEventActivity.class);
                 startActivityForResult(newIntent, ADD_TODO_ITEM_REQUEST);
             }
         });
-
         getListView().setAdapter(mAdapter);
 
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
