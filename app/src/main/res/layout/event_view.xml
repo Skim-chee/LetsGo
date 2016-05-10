@@ -88,6 +88,10 @@
 
         </TableLayout>
     </LinearLayout>
-
+    <View
+        android:layout_width="325dp"
+        android:layout_height="1dp"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/darker_gray"/>
 
 </RelativeLayout>
