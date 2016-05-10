@@ -84,7 +84,7 @@ public class EventsMainActivity extends ListActivity {
     public void clickJoin(View v) {
         //not sure if it is just a reference or i get a copy of element.
         final int position = getListView().getPositionForView(v);
-        Event pickedEvent =(Event) mAdapter.getItem(position);
+        Event pickedEvent =(Event) mAdapter.getItem(position-1);
         if (pickedEvent.getOwner().equals(currentUser.getEmail())){
             Toast.makeText(this.getBaseContext(), "You are the owner of this event." , Toast.LENGTH_SHORT).show();
 
