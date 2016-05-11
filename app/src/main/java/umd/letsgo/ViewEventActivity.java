@@ -105,7 +105,7 @@ public class ViewEventActivity extends Activity {
                 //load image
 
                 final ImageView eventPic = (ImageView) findViewById(R.id.imageEventView);
-                eventPic.setImageBitmap(base64ToBitmap(currentEvent.getImage()));
+                eventPic.setImageBitmap(base64ToBitmapWithReq(currentEvent.getImage(),256,192));
 
                 final TextView dateView = (TextView) findViewById(R.id.dateEventView);
                 dateView.setText(currentEvent.getEventDate());
@@ -202,6 +202,7 @@ public class ViewEventActivity extends Activity {
 //        listDataChild.put(listDataHeader.get(2), comingSoon);
     }
     private Bitmap base64ToBitmap(String b64) {
+
         BitmapFactory.Options options = new BitmapFactory.Options();// Create object of bitmapfactory's option method for further option use
         options.inPurgeable = true; // inPurgeable is used to free up memory while required
         byte[] imageAsBytes = Base64.decode(b64.getBytes(), Base64.DEFAULT);
@@ -209,15 +210,42 @@ public class ViewEventActivity extends Activity {
         Bitmap eventImageScaled = Bitmap.createScaledBitmap(eventImage, eventImage.getWidth()/2 , eventImage.getHeight()/2 , true);// convert decoded bitmap into well scalled Bitmap format.
         return eventImageScaled;
 
-//        BitmapFactory.Options o = new BitmapFactory.Options();
-//        o.inJustDecodeBounds = true;
-//        BitmapFactory.decodeResource(imageAsBytes., null, o);
-//        BitmapFactory.Options options = new BitmapFactory.Options();
-//        options.inJustDecodeBounds = true;
-//        BitmapFactory.decodeResource(getResources(), R.id.myimage, options);
-//        int imageHeight = options.outHeight;
-//        int imageWidth = options.outWidth;
-//        String imageType = options.outMimeType;
+    }
+
+    private Bitmap base64ToBitmapWithReq(String b64,int reqWidth, int reqHeight) {
+
+        BitmapFactory.Options options = new BitmapFactory.Options();// Create object of bitmapfactory's option method for further option use
+        options.inPurgeable = true; // inPurgeable is used to free up memory while required
+        options.inJustDecodeBounds = true;
+        byte[] imageAsBytes = Base64.decode(b64.getBytes(), Base64.DEFAULT);
+        BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length, options);
+
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length, options);
+
+    }
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight
+                    && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
     }
 
 

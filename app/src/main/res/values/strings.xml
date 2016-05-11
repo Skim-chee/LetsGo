@@ -32,7 +32,7 @@
     <string name="view_Desc">Description</string>
     <string name="view_Date">Date</string>
     <string name="view_Location">Event Location</string>
-    <string name="get_Directions">Get Directions</string>
+    <string name="get_Directions">&gt; Get Directions</string>
     <string name="view_Even_Users">Friends coming to event !!</string>
     <string name="event_Image_Res">Event Image</string>
 

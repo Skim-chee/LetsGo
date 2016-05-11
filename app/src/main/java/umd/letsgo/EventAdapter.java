@@ -50,14 +50,48 @@ public class EventAdapter extends BaseAdapter {
     }
 
     private Bitmap base64ToBitmap(String b64) {
+
+        int reqWidth =150;
+        int reqHeight=100;
+
         BitmapFactory.Options options = new BitmapFactory.Options();// Create object of bitmapfactory's option method for further option use
         options.inPurgeable = true; // inPurgeable is used to free up memory while required
+        options.inJustDecodeBounds = true;
         byte[] imageAsBytes = Base64.decode(b64.getBytes(), Base64.DEFAULT);
-        Bitmap eventImage = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
-        Bitmap eventImageScaled = Bitmap.createScaledBitmap(eventImage, 150 , 100 , true);// convert decoded bitmap into well scalled Bitmap format.
-        return eventImageScaled;
+        BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length, options);
+
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length, options);
+
+       // convert decoded bitmap into well scalled Bitmap format.
+        ///return eventImageScaled;
 //        byte[] imageAsBytes = Base64.decode(b64.getBytes(), Base64.DEFAULT);
 //        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+        //Bitmap eventImageScaled = Bitmap.createScaledBitmap(eventImage, 150 , 100 , true);
+    }
+
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight
+                    && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
     }
 
     // Returns the number of ToDoItems

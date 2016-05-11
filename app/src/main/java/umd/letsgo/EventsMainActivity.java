@@ -167,19 +167,4 @@ public class EventsMainActivity extends ListActivity {
     }
 
 }
-//                    Event post = new Event();
-//                    post.setOwner(postSnapshot.child("owner").getValue(String.class));
-//                    post.setEventID(postSnapshot.getKey());
-//                    post.setEventDate(postSnapshot.child("eventDate").getValue(String.class));
-//                    post.setEventDescription(postSnapshot.child("eventDescription").getValue(String.class));
-//                    post.setEventLocation(postSnapshot.child("eventLocation").getValue(String.class));
-//                    post.setEventName(postSnapshot.child("eventName").getValue(String.class));
-//                    post.setImage(postSnapshot.child("image").getValue(String.class));
-//                    post.setLatitude(postSnapshot.child("latitude").getValue(String.class));
-//                    post.setLongitude(postSnapshot.child("longitude").getValue(String.class));
-//
-//                    DataSnapshot members = postSnapshot.child("members");
-//                    for (DataSnapshot member : members.getChildren()) {
-//                        post.addMembers(member. .child("email").getValue(String.class));
-//                    }
-//postSnapshot.
+

@@ -7,8 +7,6 @@ import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.CursorLoader;
 import android.content.Intent;
-
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -263,7 +261,7 @@ public class CreateEventActivity extends Activity {
         if (minute < 10)
             min = "0" + minute;
 
-        timeString = hour + ":" + min + ":00";
+        timeString = hour + ":" + min;
     }
 
 //    private String getToDoTitle() {
